@@ -1,17 +1,23 @@
 require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
+const { dbConnection } = require("../database/config");
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-
+    //conectar bd
+    this.conectarDB();
     //Middelwares
     this.middlewares();
     //rutas de mi app
 
     this.routes();
+  }
+
+  async conectarDB() {
+    await dbConnection();
   }
 
   middlewares() {
@@ -27,6 +33,7 @@ class Server {
   }
   listen() {
     this.app.listen(this.port);
+    console.log("Corriendo en el puerto " + this.port);
   }
 }
 
